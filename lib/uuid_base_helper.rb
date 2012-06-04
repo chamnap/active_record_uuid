@@ -1,10 +1,13 @@
-require 'active_support/concern'
-
 module UuidBaseHelper
-	extend ActiveSupport::Concern
 	UUID_REG = /^([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{2})([0-9a-f]{2})-([0-9a-f]{12})$/
 
-	included do
+	def self.included(base)
+		base.send(:extend, ClassMethods)
+		base.send(:include, InstanceMethods)
+		base.assign_defaults
+	end
+
+	module InstanceMethods
 		def assign_uuid
 	  	self.id = UUIDTools::UUID.timestamp_create().to_s if id.blank?
 		end

@@ -2,7 +2,6 @@ require 'uuid_base_helper'
 
 class ActiveRecord::UuidBase < ActiveRecord::Base
   include UuidBaseHelper
-	UUID_REG = /^([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{2})([0-9a-f]{2})-([0-9a-f]{12})$/
 
   class << self
     def inherited_with_uuid(kls)
