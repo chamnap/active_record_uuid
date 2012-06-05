@@ -19,6 +19,11 @@ module UuidBaseHelper
   end
 
   module ClassMethods
+    
+    def generate_uuid
+      UUIDTools::UUID.send("timestamp_create").to_s
+    end
+    
     def assign_defaults
       self.primary_key            = 'uuid'
       self.inheritance_column     = 'ruby_type'
