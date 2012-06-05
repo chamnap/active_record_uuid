@@ -66,7 +66,4 @@ describe "UuidBaseHelper" do
       uuid.length.should eq(36)
     end
   end
-  
-  context "uuid association" do
-  end
 end

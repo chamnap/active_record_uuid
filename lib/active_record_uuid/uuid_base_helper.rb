@@ -33,27 +33,27 @@ module UuidBaseHelper
   
   module AssociationMethods
     def has_many(name, options = {}, &extension)
-      options = default_assoc_options(:has_many, name, options)
+      options = uuid_assoc_options(:has_many, name, options)
       super
     end
     
     def has_one(name, options = {})
-      options = default_assoc_options(:has_one, name, options)
+      options = uuid_assoc_options(:has_one, name, options)
       super
     end
     
     def belongs_to(name, options = {})
-      options = default_assoc_options(:belongs_to, name, options)
+      options = uuid_assoc_options(:belongs_to, name, options)
       super
     end
 
     def has_and_belongs_to_many(name, options = {}, &extension)
-      options = default_assoc_options(:has_and_belongs_to_many, name, options)
+      options = uuid_assoc_options(:has_and_belongs_to_many, name, options)
       super
     end
     
     private
-    def default_assoc_options(macro, association_name, options)
+    def uuid_assoc_options(macro, association_name, options)
       opts = {}
       
       # Set class_name only if not a has-through relation or poly relation
@@ -65,19 +65,19 @@ module UuidBaseHelper
       if options[:foreign_key].blank?
         case macro
         when :has_many, :has_one
-          opts[:foreign_key] = __to_foreign_key(self.name)
+          opts[:foreign_key] = uuid_foreign_key(self.name)
         when :belongs_to
-          opts[:foreign_key] = __to_foreign_key(association_name)
+          opts[:foreign_key] = uuid_foreign_key(association_name)
         when :has_and_belongs_to_many
-          opts[:foreign_key] = __to_foreign_key(self.name)
-          opts[:association_foreign_key] = __to_foreign_key(association_name)
+          opts[:foreign_key] = uuid_foreign_key(self.name)
+          opts[:association_foreign_key] = uuid_foreign_key(association_name)
         end
       end
 
       options.merge(opts)
     end
     
-    def __to_foreign_key(name)
+    def uuid_foreign_key(name)
       name.to_s.singularize.underscore.downcase + "_uuid"
     end
   end
