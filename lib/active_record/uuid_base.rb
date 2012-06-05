@@ -9,10 +9,10 @@ class ActiveRecord::UuidBase < ActiveRecord::Base
       kls.assign_defaults
     end
     alias_method_chain :inherited, :uuid
-	end
+  end
 
-	self.descendants.each do |kls|
-  	kls.assign_defaults
+  self.descendants.each do |kls|
+    kls.assign_defaults
   end
 
   self.abstract_class = true
