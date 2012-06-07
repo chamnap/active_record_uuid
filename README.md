@@ -28,7 +28,7 @@ Or
     class Post < ActiveRecord::Base
       include UuidBaseHelper
     end
-    
+
 You include `UuidBaseHelper` to your model when your is already inherited from other class (STI, ...).
 
 This gems does the following:
@@ -38,6 +38,7 @@ This gems does the following:
 2. generate the `uuid` value before it saves to the database
 
 3. validate the format of `uuid`
+
 
     class Author < ActiveRecord::UuidBase
       has_and_belongs_to_many :posts
@@ -52,6 +53,7 @@ This gems does the following:
     class Comment < ActiveRecord::UuidBase
       belongs_to :post
     end
+
 
 4. This above code expects that you have foreign_keys with `_uuid`, so you don't have to pass `:foreign_key` option inside association methods. Other associations options would work as usual, and you can overwrite this behavior as well.
 
