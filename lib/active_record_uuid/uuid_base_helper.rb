@@ -10,12 +10,17 @@ module UuidBaseHelper
 
   module InstanceMethods
     def assign_uuid
-      self.id = UUIDTools::UUID.timestamp_create().to_s if self.id.blank?
+      self.id = UUIDTools::UUID.timestamp_create().to_s
     end
 
     def assign_uuid!
       assign_uuid
       save!
+    end
+    
+    private
+    def assign_uuid_when_blank
+      assign_uuid if self.id.blank?
     end
   end
 
@@ -26,7 +31,7 @@ module UuidBaseHelper
     
     def assign_defaults
       self.primary_key            = 'uuid'
-      self.before_create          :assign_uuid
+      self.before_create          :assign_uuid_when_blank
       self.validates_format_of    :uuid, :with => UUID_REG, :if => Proc.new { |r| r.id.present? }
     end
   end

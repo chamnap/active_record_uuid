@@ -32,8 +32,11 @@ Or
 You include `UuidBaseHelper` to your model when your is already inherited from other class (STI, ...).
 
 This gems does the following:
+
 1. set primary_key to `uuid`
+
 2. generate the `uuid` value before it saves to the database
+
 3. validate the format of `uuid`
 
     class Author < ActiveRecord::UuidBase
@@ -56,4 +59,13 @@ This gems does the following:
       has_many :comments, :foreign_key => "comment_id", :inverse_of => :post
     end
 
-5. It also corrects the `schema.rb` to reflect that `uuid` is not auto-increment integer primary_key so that your tests could work well.
+5. It also corrects the `schema.rb` to reflect that `uuid` is not an auto-increment integer primary_key so that your tests could work well.
+
+    # assign a uuid
+    @post.assign_uuid
+
+    # assign a uuid and save immediately
+    @post.assign_uuid!
+
+    # generate to a uuid
+    Post.generate_uuid
