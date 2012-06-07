@@ -1,6 +1,6 @@
 # ActiveRecordUuid
 
-`active_record_uuid` is a nice and simple gem that add uuid support to your `activerecord` models, `associations`, and `schema.rb`.
+`active_record_uuid` is a nice and simple gem that add uuid support to your `activerecord` models, `associations`, `schema.rb`, and `rake script`.
 
 ## Installation
 
@@ -43,7 +43,7 @@ Or
       include UuidBaseHelper
     end
 
-You include `UuidBaseHelper` to your model when your is already inherited from other class (STI, ...).
+You include `UuidBaseHelper` to your model when your model is already inherited from other classes (STI, ...).
 
     # create a post with auto-generated uuid
     post = Post.new(:text => "Manual uuid")
