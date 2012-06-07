@@ -1,6 +1,6 @@
 # ActiveRecordUuid
 
-TODO: Write a gem description
+`active_record_uuid` is a nice and simple gem that add uuid support to your `activerecord` models, `associations`, and `schema.rb`.
 
 ## Installation
 
@@ -18,12 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+There are two ways you can use this gem: by `inherit` and `include`.
 
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+    class Post < ActiveRecord::UuidBase
+    end
+    
+    class Post < ActiveRecord::Base
+      include UuidBaseHelper
+    end
