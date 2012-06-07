@@ -29,6 +29,7 @@ In your migration files, you don't add any `:primary`, because it will make that
     end
     
 Add primary keys to all tables
+
     $ rake db:add_primary_keys
 
 There are two ways you can use this gem: by `inherit` and `include`.
@@ -63,7 +64,8 @@ You include `UuidBaseHelper` to your model when your is already inherited from o
     # generate to a uuid
     Post.generate_uuid
 
-    # It expects you have foreign_keys with `_uuid`, so you don't have to pass `:foreign_key` option inside association methods
+    # It expects you have foreign_keys with `_uuid`
+    # you don't have to pass `:foreign_key` option inside association methods
     class Author < ActiveRecord::UuidBase
       has_and_belongs_to_many :posts
     end
