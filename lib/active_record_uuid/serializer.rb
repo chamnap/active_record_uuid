@@ -8,18 +8,22 @@ module ActiveRecordUuid
     def load(value)
       return nil if value.nil?
 
-      uuid = case type
-      when :binary
-        UUIDTools::UUID.parse_raw(value)
-      when :base64
-        UUIDTools::UUID.parse_raw(Base64.decode64(value))
-      when :hexdigest
-        UUIDTools::UUID.parse_hexdigest(value)
-      when :string
-        UUIDTools::UUID.parse(value)
+      begin
+        uuid = case type
+        when :binary
+          UUIDTools::UUID.parse_raw(value)
+        when :base64
+          UUIDTools::UUID.parse_raw(Base64.decode64(value))
+        when :hexdigest
+          UUIDTools::UUID.parse_hexdigest(value)
+        when :string
+          UUIDTools::UUID.parse(value)
+        end
+        
+        uuid.to_s
+      rescue ArgumentError, TypeError
+        nil
       end
-      
-      uuid.to_s
     end
     
     def dump(value)

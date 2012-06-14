@@ -2,7 +2,6 @@ module UuidBaseHelper
   def self.included(base)
     base.send(:extend, ClassMethods)
     base.send(:include, InstanceMethods)
-    base.assign_defaults
   end
 
   module InstanceMethods
@@ -43,35 +42,25 @@ module UuidBaseHelper
 
   module ClassMethods 
     def uuid_base(&block)
-      @config ||= ActiveRecordUuid::Config.new
+      return @config if @config.present?
+      
+      @config = ActiveRecordUuid::Config.new
       @config.instance_eval(&block) if block_given?
+      @config.assign_default!
+
+      column_name = @config.column.to_sym
+      self.primary_key              = column_name if @config.primary_key
+      self.validates_uniqueness_of  column_name
+      self.serialize                column_name, ActiveRecordUuid::Serializer.new(@config.store_as)
+      self.before_validation        :assign_uuid_when_blank
+      self.validate                 :validates_uuid
+      self.send(:extend, ActiveRecordUuid::AssociationMethods) if @config.association
+      
       @config
     end
     
     def generate_uuid
-      uuid = UUIDTools::UUID.send("#{uuid_base.generator}_create")
-      
-      case uuid_base.store_as
-      when :base64
-        Base64.encode64(uuid.raw)[0..-2]
-      when :binary
-        uuid.raw
-      when :hexdigest
-        uuid.hexdigest
-      else
-        uuid.to_s
-      end
-    end
-    
-    def assign_defaults
-      column_name                   = uuid_base.column
-      
-      self.before_validation        :assign_uuid_when_blank
-      self.validate                 :validates_uuid
-      self.primary_key              = column_name if uuid_base.primary_key
-      self.validates_uniqueness_of  column_name
-      self.serialize                column_name, ActiveRecordUuid::Serializer.new(uuid_base.store_as)
-      self.send(:extend, ActiveRecordUuid::AssociationMethods) if uuid_base.association
+      UUIDTools::UUID.send("#{uuid_base.generator}_create").to_s
     end
   end
 end
