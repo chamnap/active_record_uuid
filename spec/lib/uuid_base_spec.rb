@@ -1,64 +1,64 @@
 require 'spec_helper'
 
 describe "UuidBase" do
-  context "uuid as primary key" do
-    it "should have uuid as primary key for new models" do
-      class NewPostInherit < ActiveRecord::UuidBase
-        self.table_name = "posts"
-      end
-      NewPostInherit.primary_key.should eq('uuid')
+  context "uuid base configuration - default option" do
+    it "should not use primary_key" do
+      Article.primary_key.should eq("id")
     end
-
-    it "should have uuid as primary key for existing models" do
-      PostInherit.primary_key.should eq('uuid')
+    
+    it "should not set association" do
+      Article.reflections[:comments].options[:foreign_key].should be(nil)
     end
-
-    it "should assign uuid automatically when create new record" do
-      post = PostInherit.create(:text => "Auto Generate uuid")
-      post.reload
-
-      post.uuid.should be_present
-      post.uuid.should be_instance_of(String)
-      post.uuid.length.should eq(36)
+    
+    it "should generate uuid string on uuid column" do
+      article = Article.create(:title => "Hello World")
+      
+      article.uuid_valid?.should be_true
     end
-
+    
+    it "should validate duplicate uuid" do
+      article1 = Article.create(:uuid => '8df4689b-b580-11e1-9d31-0026b90faf3c', :title => "Hello World1")
+      article2 = Article.new(:uuid => '8df4689b-b580-11e1-9d31-0026b90faf3c', :title => "Hello World2")
+      
+      article2.valid?.should be_false
+      article2.errors[:uuid].first.should be_include("been taken")
+    end
+    
     it "should assign uuid manually" do
-      post = PostInherit.new(:text => "Manual uuid")
-      post.uuid = "79f8a42e-ae60-11e1-9aa9-0026b90faf3c"
-      post.save
-      post.reload
+      article = Article.new(:title => "Manual uuid")
+      article.uuid = "79f8a42e-ae60-11e1-9aa9-0026b90faf3c"
+      article.save
+      article.reload
 
-      post.uuid.should eq("79f8a42e-ae60-11e1-9aa9-0026b90faf3c")
+      article.uuid.should eq("79f8a42e-ae60-11e1-9aa9-0026b90faf3c")
     end
-
+    
     it "should assign uuid if blank" do
-      post = PostInherit.new(:text => "Manual uuid 2")
-      post.assign_uuid
+      article = Article.new(:title => "Manual uuid 2")
+      article.assign_uuid
 
-      post.uuid.should be_present
-      post.uuid.should be_instance_of(String)
-      post.uuid.length.should eq(36)
+      article.uuid.should be_present
+      article.uuid_valid?.should be_true
     end
 
     it "should assign uuid if blank and save immediately" do
-      post = PostInherit.new(:text => "Manual uuid 3")
-      post.assign_uuid!
+      article = Article.new(:title => "Manual uuid 3")
+      article.assign_uuid!
 
-      post.uuid.should be_present
-      post.uuid.should be_instance_of(String)
-      post.uuid.length.should eq(36)
+      article.uuid.should be_present
+      article.uuid_valid?.should be_true
     end
 
     it "should have valid uuid" do
-      post = PostInherit.new(:text => "Invalid uuid")
-      post.uuid = "invalid"
+      article = Article.new(:title => "Invalid uuid")
+      article.uuid = "invalid"
 
-      post.valid?.should eq(false)
-      post.errors[:uuid].first.should eq("is invalid")
+      article.valid?.should eq(false)
+      article.errors[:uuid].first.should be_include("is invalid")
     end
     
     it "should generate uuid" do
-      uuid = PostInherit.generate_uuid
+      uuid = Article.generate_uuid
       
       uuid.should be_present
       uuid.should be_instance_of(String)

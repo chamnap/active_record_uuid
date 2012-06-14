@@ -20,3 +20,7 @@ end
 class Comment < ActiveRecord::UuidBase
   belongs_to :post
 end
+
+class Article < ActiveRecord::UuidBase
+  has_many :comments
+end

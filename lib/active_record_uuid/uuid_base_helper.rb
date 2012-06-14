@@ -1,89 +1,77 @@
 module UuidBaseHelper
-  UUID_REG = /^([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{2})([0-9a-f]{2})-([0-9a-f]{12})$/
-
   def self.included(base)
     base.send(:extend, ClassMethods)
-    base.send(:extend, AssociationMethods)
     base.send(:include, InstanceMethods)
     base.assign_defaults
   end
 
   module InstanceMethods
     def assign_uuid
-      self.id = UUIDTools::UUID.timestamp_create().to_s
+      send("#{uuid_column}=", self.class.generate_uuid)
     end
 
     def assign_uuid!
       assign_uuid
       save!
     end
+     
+    def uuid_valid?
+      begin
+        UUIDTools::UUID.parse(uuid_value).valid?
+      rescue ArgumentError, TypeError
+        false
+      end
+    end
     
     private
     def assign_uuid_when_blank
-      assign_uuid if self.id.blank?
+      assign_uuid if uuid_value.blank?
+    end
+    
+    def uuid_column
+      self.class.uuid_base.column
+    end
+    
+    def uuid_value
+      send(uuid_column)
+    end
+    
+    def validates_uuid
+      errors.add(uuid_column, "is invalid format") unless uuid_valid?
     end
   end
 
-  module ClassMethods
+  module ClassMethods 
+    def uuid_base(&block)
+      @config ||= ActiveRecordUuid::Config.new
+      @config.instance_eval(&block) if block_given?
+      @config
+    end
+    
     def generate_uuid
-      UUIDTools::UUID.send("timestamp_create").to_s
+      uuid = UUIDTools::UUID.send("#{uuid_base.generator}_create")
+      
+      case uuid_base.store_as
+      when :base64
+        Base64.encode64(uuid.raw)[0..-2]
+      when :binary
+        uuid.raw
+      when :hexdigest
+        uuid.hexdigest
+      else
+        uuid.to_s
+      end
     end
     
     def assign_defaults
-      self.primary_key            = 'uuid'
-      self.before_create          :assign_uuid_when_blank
-      self.validates_format_of    :uuid, :with => UUID_REG, :if => Proc.new { |r| r.id.present? }
-    end
-  end
-  
-  module AssociationMethods
-    def has_many(name, options = {}, &extension)
-      options = uuid_assoc_options(:has_many, name, options)
-      super
-    end
-    
-    def has_one(name, options = {})
-      options = uuid_assoc_options(:has_one, name, options)
-      super
-    end
-    
-    def belongs_to(name, options = {})
-      options = uuid_assoc_options(:belongs_to, name, options)
-      super
-    end
-
-    def has_and_belongs_to_many(name, options = {}, &extension)
-      options = uuid_assoc_options(:has_and_belongs_to_many, name, options)
-      super
-    end
-    
-    private
-    def uuid_assoc_options(macro, association_name, options)
-      opts = {}
+      column_name                   = uuid_base.column
       
-      # Set class_name only if not a has-through relation or poly relation
-      if options[:through].blank? and options[:as].blank? and options[:class_name].blank? and !self.name.match(/::/)
-        opts[:class_name] = "::#{association_name.to_s.singularize.camelize}"
-      end
-      
-      # Set foreign_key only if not passed
-      if options[:foreign_key].blank?
-        case macro
-        when :has_many, :has_one
-          opts[:foreign_key] = uuid_foreign_key(self.name)
-        when :belongs_to
-          opts[:foreign_key] = uuid_foreign_key(association_name)
-        when :has_and_belongs_to_many
-          opts[:foreign_key] = uuid_foreign_key(self.name)
-          opts[:association_foreign_key] = uuid_foreign_key(association_name)
-        end
-      end
-
-      options.merge(opts)
-    end
-    
-    def uuid_foreign_key(name)
-      name.to_s.singularize.underscore.downcase + "_uuid"
+      self.before_validation        :assign_uuid_when_blank
+      self.validate                 :validates_uuid
+      self.primary_key              = column_name if uuid_base.primary_key
+      self.validates_uniqueness_of  column_name
+      self.serialize                column_name, ActiveRecordUuid::Serializer.new(uuid_base.store_as)
+      self.send(:extend, ActiveRecordUuid::AssociationMethods) if uuid_base.association
     end
   end
 end

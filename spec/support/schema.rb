@@ -26,4 +26,10 @@ ActiveRecord::Schema.define do
     t.string :post_uuid, :limit => 36
     t.string :author_uuid, :limit => 36
   end
+  
+  create_table :articles, :force => true do |t|
+    t.string :title
+    t.string :uuid, :limit => 36
+  end
+  
 end
