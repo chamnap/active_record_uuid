@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "UuidBase" do
+describe "UuidBase" do  
   context "uuid base configuration - default option" do
     it "should not use primary_key" do
       Article.primary_key.should eq("id")
@@ -79,13 +79,14 @@ describe "UuidBase" do
     
     it "should store uuid as binary" do
       post = PostBinary.create(:text => "Binary uuid1")
+      post.reload
       
-      ActiveRecord::Base.connection.execute("select uuid from post_binaries where text = 'Binary uuid1'")[0]["uuid"].bytesize.should eq(16)
+      post.attributes_before_type_cast["uuid"]["value"].bytesize.should eq(16)
     end
     
     it "should retreive back as uuid string from binary" do
       post = PostBinary.create(:text => "Binary uuid2")
-#      post.reload
+      post.reload
       
       post.uuid.should be_present
       post.uuid.should be_instance_of(String)
@@ -96,11 +97,32 @@ describe "UuidBase" do
       post = PostBinary.new(:text => "Binary uuid2")
       post.uuid = "b360c78e-b62e-11e1-9870-0026b90faf3c"
       post.save
-#      post.reload
+      post.reload
       
       post.uuid.should eq("b360c78e-b62e-11e1-9870-0026b90faf3c")
       post.uuid.should be_instance_of(String)
       post.uuid.length.should eq(36)
+    end
+    
+    it "should find by uuid column" do
+      post = PostBinary.create(:text => "Binary uuid3")
+
+      PostBinary.find_by_uuid(post.uuid).should   eq(post)
+      PostBinary.where(:uuid => post.uuid).should eq([post])
+    end
+    
+    it "should find by primary key" do
+      post = PostBinary.create(:text => "Binary uuid4")
+
+      PostBinary.find(post).should eq(post)
+      PostBinary.find(post.uuid).should eq(post)
+    end
+    
+    it "should find by array of primary keys" do
+      post1 = PostBinary.create(:text => "Binary uuid5")
+      post2 = PostBinary.create(:text => "Binary uuid6")
+
+      PostBinary.find([post1.uuid, post2.uuid]).should eq([post1, post2])
     end
   end
 end

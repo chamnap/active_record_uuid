@@ -1,6 +1,7 @@
 require 'uuidtools'
 require 'base64'
 require 'active_record'
+require 'active_support/concern'
 
 module ActiveRecordUuid
   autoload :VERSION,            'active_record_uuid/version'
@@ -10,5 +11,4 @@ module ActiveRecordUuid
 end
 
 require 'active_record_uuid/uuid_base'
-require 'active_record_uuid/rails/railtie' if defined?(Rails)
-
+require 'active_record_uuid/rails/railtie' if defined?(Rails::Railtie)

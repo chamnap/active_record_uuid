@@ -1,9 +1,24 @@
 require 'active_record_uuid'
 
-ActiveRecord::Base.establish_connection(
-  :adapter => "sqlite3", 
-  :database => File.dirname(__FILE__) + "/active_record_uuid.sqlite3"
-)
+db_config = {
+  :adapter => "mysql2", 
+  :database => "active_record_uuid",
+  :user => "root",
+  :password => "Q1p2m3g4"
+}
+ActiveRecord::Base.establish_connection(db_config)
+ActiveRecord::Base.connection.drop_database(db_config[:database])
+ActiveRecord::Base.establish_connection(db_config.merge(:database => nil))
+ActiveRecord::Base.connection.create_database(db_config[:database], { :charset => 'utf8', :collation => 'utf8_unicode_ci' })
+ActiveRecord::Base.establish_connection(db_config)
+
+require 'active_record_uuid/extensions/quoting_extension'
+::ActiveRecord::Base.connection.class.send :include, ActiveRecordUuid::QuotingExtension
 
 load File.dirname(__FILE__) + '/support/schema.rb'
 load File.dirname(__FILE__) + '/support/models.rb'
+
+RSpec.configure do |config|
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+end
