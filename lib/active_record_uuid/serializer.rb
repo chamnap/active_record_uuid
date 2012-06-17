@@ -5,7 +5,6 @@ module ActiveRecordUuid
       @type = type
     end
     
-    #http://rubydoc.info/docs/rails/3.1.1/ActiveRecord/Coders/YAMLColumn
     def load(value)
       return nil if value.nil?
 

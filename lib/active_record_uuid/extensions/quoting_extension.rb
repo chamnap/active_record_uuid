@@ -3,13 +3,13 @@ module ActiveRecordUuid
     extend ActiveSupport::Concern
     
     included do
-      def quote_with_uuid(value, column = nil)
-        return quote_without_uuid(value, column) if column.blank? or !value.instance_of?(String) or value.bytesize != 36
+      def quote(value, column = nil)
+        return super if column.blank? or !value.instance_of?(String) or value.bytesize != 36
         
         begin
           uuid = UUIDTools::UUID.parse(value)
         rescue ArgumentError, TypeError
-          return quote_without_uuid(value, column)
+          return super
         end
 
         hex_digest = value.gsub('-', '')
@@ -27,8 +27,6 @@ module ActiveRecordUuid
           end
         end
       end
-      alias_method_chain :quote, :uuid
-      
     end
   end
 end
