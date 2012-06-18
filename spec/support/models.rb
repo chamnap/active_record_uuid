@@ -21,6 +21,13 @@ class PostBase64 < ActiveRecord::UuidBase
   end
 end
 
+class PostHexDigest < ActiveRecord::UuidBase
+  uuid_base do
+    primary_key true
+    store_as    :hexdigest
+  end
+end
+
 class Author < ActiveRecord::UuidBase
   uuid_base do
     association true
