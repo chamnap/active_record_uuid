@@ -1,5 +1,7 @@
 module ActiveRecordUuid
   class Railtie < Rails::Railtie
+    config.active_record.schema_format = :sql
+    
     initializer :after => 'active_record.initialize_database' do
     
       ActiveSupport.on_load(:active_record) do |app|
