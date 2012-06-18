@@ -15,6 +15,12 @@ describe "UuidBase" do
       
       article.uuid_valid?.should be_true
     end
+    
+    it "should generate uuid on before_validation" do
+      article = Article.new(:title => "Hello World")
+      
+      article.valid?.should be_true
+    end
   end
   
   context "generate and validate uuid" do
@@ -65,6 +71,18 @@ describe "UuidBase" do
       uuid.should be_present
       uuid.should be_instance_of(String)
       uuid.length.should eq(36)
+    end
+    
+    it "should generate uuid on :after_initialize" do
+      class NewArticle < ActiveRecord::UuidBase
+        self.table_name = "articles"
+        uuid_base do
+          hook :after_initialize
+        end
+      end
+      article = NewArticle.new(:title => "After initialize uuid")
+      
+      article.uuid_valid?.should be_true
     end
   end
 end

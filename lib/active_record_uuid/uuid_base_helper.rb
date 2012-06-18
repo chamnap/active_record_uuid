@@ -46,13 +46,13 @@ module UuidBaseHelper
       
       @config = ActiveRecordUuid::Config.new
       @config.instance_eval(&block) if block_given?
-      @config.assign_default!
+      @config.validate_options!
 
       column_name = @config.column.to_sym
       self.primary_key              = column_name if @config.primary_key
       self.validates_uniqueness_of  column_name
       self.serialize                column_name, ActiveRecordUuid::Serializer.new(@config.store_as)
-      self.before_validation        :assign_uuid_when_blank
+      self.send(@config.hook,       :assign_uuid_when_blank)
       self.validate                 :validates_uuid
       self.send(:extend, ActiveRecordUuid::AssociationMethods) if @config.association
       
