@@ -12,18 +12,17 @@ module ActiveRecordUuid
           return super
         end
 
-        hex_digest = value.gsub('-', '')
         case column.type
         when :binary
-          "BINARY x'#{hex_digest}'"
+          "BINARY x'#{uuid.hexdigest}'"
         when :string
-          case value.length
+          case column.limit
           when 24
-            "'#{Base64.encode64(hex_digest)}'"
+            "'#{Base64.encode64(uuid.raw).strip}'"
           when 32
-            "'#{hex_digest}'"
-          when 36
-            "'#{value}'"
+            "'#{uuid.hexdigest}'"
+          else
+            "'#{uuid.to_s}'"
           end
         end
       end

@@ -14,6 +14,13 @@ class PostBinary < ActiveRecord::UuidBase
   has_many :comments
 end
 
+class PostBase64 < ActiveRecord::UuidBase
+  uuid_base do
+    primary_key true
+    store_as    :base64
+  end
+end
+
 class Author < ActiveRecord::UuidBase
   uuid_base do
     association true

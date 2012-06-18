@@ -12,6 +12,12 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
   
+  create_table :post_base64s, :force => true, :id => false do |t|
+    t.string :uuid, :limit => 24
+    t.string :text
+    t.timestamps
+  end
+  
   create_table :posts, :force => true, :id => false do |t|
     t.string :uuid, :limit => 36
     t.string :text

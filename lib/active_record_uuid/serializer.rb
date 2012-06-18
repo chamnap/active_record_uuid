@@ -37,7 +37,7 @@ module ActiveRecordUuid
       when :binary
         uuid.raw
       when :base64
-        Base64.encode64(uuid.hexdigest).strip
+        Base64.encode64(uuid.raw).strip
       when :hexdigest
         uuid.hexdigest
       when :string
