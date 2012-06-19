@@ -11,7 +11,7 @@ module ActiveRecordUuid
       end
     end
     
-  	rake_tasks do
+    rake_tasks do
       load "active_record_uuid/rails/db.rake"
     end
   end

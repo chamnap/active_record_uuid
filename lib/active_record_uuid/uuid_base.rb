@@ -6,10 +6,10 @@ class ActiveRecord::UuidBase < ::ActiveRecord::Base
       inherited_without_uuid kls
       warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `uuid_config` instead."
       kls.uuid_config do
-      	primary_key true
-	      association true
-	      hook        :before_create
-	    end
+        primary_key true
+        association true
+        hook        :before_create
+      end
     end
     alias_method_chain :inherited, :uuid
   end
@@ -17,7 +17,7 @@ class ActiveRecord::UuidBase < ::ActiveRecord::Base
   self.descendants.each do |kls|
     warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `uuid_config` instead."
     kls.uuid_config do
-    	primary_key true
+      primary_key true
       association true
       hook        :before_create
     end

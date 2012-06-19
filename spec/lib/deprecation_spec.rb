@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe "Depreciation: ActiveRecord::UuidBase" do
-	it "should create uuid" do
-		article = ArticleUuidBase.create(:title => "uuid base1")
+  it "should create uuid" do
+    article = ArticleUuidBase.create(:title => "uuid base1")
 
-		article.uuid.length.should eq(36)
-	end
+    article.uuid.length.should eq(36)
+  end
 
-	it "should not use primary_key" do
+  it "should not use primary_key" do
     ArticleUuidBase.primary_key.should eq("uuid")
   end
   
