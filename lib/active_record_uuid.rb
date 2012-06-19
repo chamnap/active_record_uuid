@@ -8,7 +8,9 @@ module ActiveRecordUuid
   autoload :Config,             'active_record_uuid/config'
   autoload :Serializer,         'active_record_uuid/serializer'
   autoload :AssociationMethods, 'active_record_uuid/association_methods'
+  autoload :Model,              'active_record_uuid/model'
 end
 
 require 'active_record_uuid/uuid_base'
 require 'active_record_uuid/rails/railtie' if defined?(Rails::Railtie)
+ActiveRecord::Base.send(:include, ActiveRecordUuid::Model)

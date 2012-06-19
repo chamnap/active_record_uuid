@@ -7,7 +7,7 @@ module ActiveRecordUuid
       ActiveSupport.on_load(:active_record) do |app|
         require 'active_record_uuid/extensions/quoting_extension'
         
-        ::ActiveRecord::UuidBase.connection.class.send :include, ActiveRecordUuid::QuotingExtension
+        ::ActiveRecord::Base.connection.class.send :include, ActiveRecordUuid::QuotingExtension
       end
     end
     

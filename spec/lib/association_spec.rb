@@ -1,7 +1,6 @@
 require 'spec_helper'
-require 'logger'
 
-describe "UuidBase" do
+describe "UuidConfig" do
   context "uuid association" do
     before(:all) do
       @post1 = Post.create!(:text => "Post 1")

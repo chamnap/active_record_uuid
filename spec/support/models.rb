@@ -1,11 +1,17 @@
-class Article < ActiveRecord::UuidBase
-  uuid_base
+class Article < ActiveRecord::Base
+  uuid_config
   
   has_many :comments
 end
 
-class PostBinary < ActiveRecord::UuidBase
-  uuid_base do
+class ArticleUuidBase < ActiveRecord::UuidBase
+  self.table_name = "articles"
+
+  has_many :comments
+end
+
+class PostBinary < ActiveRecord::Base
+  uuid_config do
     association true
     primary_key true
     store_as    :binary
@@ -14,22 +20,22 @@ class PostBinary < ActiveRecord::UuidBase
   has_many :comments
 end
 
-class PostBase64 < ActiveRecord::UuidBase
-  uuid_base do
+class PostBase64 < ActiveRecord::Base
+  uuid_config do
     primary_key true
     store_as    :base64
   end
 end
 
-class PostHexDigest < ActiveRecord::UuidBase
-  uuid_base do
+class PostHexDigest < ActiveRecord::Base
+  uuid_config do
     primary_key true
     store_as    :hexdigest
   end
 end
 
-class Author < ActiveRecord::UuidBase
-  uuid_base do
+class Author < ActiveRecord::Base
+  uuid_config do
     association true
     primary_key true
   end
@@ -37,8 +43,8 @@ class Author < ActiveRecord::UuidBase
   has_and_belongs_to_many :posts
 end
 
-class Post < ActiveRecord::UuidBase
-  uuid_base do
+class Post < ActiveRecord::Base
+  uuid_config do
     primary_key true
     association true
   end
@@ -48,8 +54,8 @@ class Post < ActiveRecord::UuidBase
   has_and_belongs_to_many :authors
 end
 
-class Comment < ActiveRecord::UuidBase
-  uuid_base do
+class Comment < ActiveRecord::Base
+  uuid_config do
     association true
     primary_key true
   end
