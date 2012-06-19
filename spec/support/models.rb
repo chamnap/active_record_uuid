@@ -1,3 +1,13 @@
+class Blog < ActiveRecord::Base
+  uuid_config do
+    association true
+    primary_key true
+    store_as    :binary
+  end
+
+  has_many :articles
+end
+
 class Article < ActiveRecord::Base
   uuid_config
   

@@ -1,9 +1,16 @@
 ActiveRecord::Schema.define do
   self.verbose = false
 
+  create_table :blogs, :force => true, :id => false do |t|
+    t.binary :uuid, :limit => 16
+    t.string :name
+    t.timestamps
+  end
+
   create_table :articles, :force => true do |t|
     t.string :title
     t.string :uuid, :limit => 36
+    t.binary :blog_uuid, :limit => 16
   end
   
   create_table :post_binaries, :force => true, :id => false do |t|

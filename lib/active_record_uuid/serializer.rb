@@ -19,10 +19,12 @@ module ActiveRecordUuid
         when :string
           UUIDTools::UUID.parse(value)
         end
+        raise ArgumentError unless uuid.valid?
         
         uuid.to_s
       rescue ArgumentError, TypeError
-        nil
+        raise ActiveRecord::SerializationTypeMismatch,
+          "Attribute was supposed to be a valid uuid, but was #{value}"
       end
     end
     
@@ -30,7 +32,7 @@ module ActiveRecordUuid
       uuid = begin
         UUIDTools::UUID.parse(value)
       rescue ArgumentError, TypeError
-        return nil
+        nil
       end
       
       case type

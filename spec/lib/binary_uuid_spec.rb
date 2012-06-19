@@ -57,5 +57,13 @@ describe "Binary Uuid" do
 
       PostBinary.find([post1.uuid, post2.uuid]).should eq([post1, post2])
     end
+
+    it "should save association" do
+      blog = Blog.create(:name => "Blog 1")
+      article = blog.articles.create(:title => "Blog Association 1")
+
+      blog.articles.count.should eq(1)
+      blog.articles[0].should eq(article)
+    end
   end
 end
