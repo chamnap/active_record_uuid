@@ -16,6 +16,7 @@ ActiveRecord::Base.establish_connection(db_config)
 # load extension
 require 'active_record_uuid/extensions/quoting_extension'
 ::ActiveRecord::Base.connection.class.send :include, ActiveRecordUuid::QuotingExtension
+::ActiveRecord::Base.send(:include, ActiveRecordUuid::Model)
 
 # load support
 load File.dirname(__FILE__) + '/support/schema.rb'

@@ -8,6 +8,7 @@ module ActiveRecordUuid
         require 'active_record_uuid/extensions/quoting_extension'
         
         ::ActiveRecord::Base.connection.class.send :include, ActiveRecordUuid::QuotingExtension
+        ::ActiveRecord::Base.send(:include, ActiveRecordUuid::Model)
       end
     end
     

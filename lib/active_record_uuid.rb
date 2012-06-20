@@ -13,4 +13,3 @@ end
 
 require 'active_record_uuid/uuid_base'
 require 'active_record_uuid/rails/railtie' if defined?(Rails::Railtie)
-ActiveRecord::Base.send(:include, ActiveRecordUuid::Model)
