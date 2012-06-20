@@ -4,8 +4,8 @@ require File.expand_path('../lib/active_record_uuid/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Chamnap"]
   gem.email         = ["chamnapchhorn@gmail.com"]
-  gem.description   = %q{A nice gem to add uuids to your models, associations, and schema.rb}
-  gem.summary       = %q{A gem for adding uuids to your active record models}
+  gem.description   = %q{active_record_uuid is a nice gem that add uuid supports to your activerecord models (MySQL). It allows you to store uuid in various formats: binary (16 bytes), base64 (24 bytes), hexdigest (32 bytes), or string (36 bytes), and query back with uuid string.}
+  gem.summary       = %q{A full-featured gem for adding uuid support to your active record models}
   gem.homepage      = "https://github.com/chamnap/active_record_uuid"
 
   gem.files         = `git ls-files`.split($\)

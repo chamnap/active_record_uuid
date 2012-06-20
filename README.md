@@ -94,6 +94,27 @@ To use uuid in your model, call `uuid_config` in your model.
     # generate to a uuid
     Post.generate_uuid
 
+### Binary uuid model (example)
+
+    class PostBinary < ActiveRecord::Base
+      uuid_config do
+        primary_key true
+        store_as    :binary
+      end
+    end
+    
+    post = PostBinary.create(:text => "Binary uuid1")
+    # INSERT INTO `post_binaries` (`created_at`, `text`, `updated_at`, `uuid`) VALUES ('2012-06-20 17:32:47', 'Binary uuid1', '2012-06-20 17:32:47', x'4748f690bac311e18e440026b90faf3c')
+    
+    post.uuid # "4748f690-bac3-11e1-8e44-0026b90faf3c"
+    
+    # it works as usual for finding records
+    PostBinary.find_by_uuid(post.uuid)
+    PostBinary.where(:uuid => post.uuid)
+    PostBinary.find(post)
+    PostBinary.find(post.uuid)
+    PostBinary.find([post.uuid])
+
 ### Avaliable options inside `uuid_config`
 #### `column` option
 
