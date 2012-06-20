@@ -86,12 +86,15 @@ To use uuid in your model, call `uuid_config` in your model.
     post.save
     
     # assign a uuid
-    @post.assign_uuid
+    post.assign_uuid
 
     # assign a uuid and save immediately
-    @post.assign_uuid!
+    post.assign_uuid!
+    
+    # check the uuid value is valid or not
+    post.uuid_valid?
 
-    # generate to a uuid
+    # generate a new uuid
     Post.generate_uuid
 
 ### Binary uuid model (example)
@@ -114,6 +117,11 @@ To use uuid in your model, call `uuid_config` in your model.
     PostBinary.find(post)
     PostBinary.find(post.uuid)
     PostBinary.find([post.uuid])
+    post.comments.create(:text => "Comment 1")
+    
+    # access the value that stored in db
+    post.reload
+    post.attributes_before_type_cast["uuid"]["value"]
 
 ### Avaliable options inside `uuid_config`
 #### `column` option
