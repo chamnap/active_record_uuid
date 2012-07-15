@@ -14,7 +14,7 @@ module ActiveRecordUuid
 
         case column.type
         when :binary
-          "BINARY x'#{uuid.hexdigest}'"
+          "x'#{uuid.hexdigest}'"
         when :string
           case column.limit
           when 24

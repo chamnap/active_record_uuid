@@ -9,5 +9,9 @@ module ActiveRecordUuid
     rake_tasks do
       load "active_record_uuid/rails/db.rake"
     end
+    
+    generators do
+      require 'active_record_uuid/rails/generators/config_generator'
+    end
   end
 end
