@@ -12,6 +12,8 @@ You have various choices when storing uuid:
 - hexdigest, 32 bytes string (compact uuid format, without dash)
 - string, 36 bytes string (full length uuid)
 
+Check this out for more detail, [http://www.mysqlperformanceblog.com/2007/03/13/to-uuid-or-not-to-uuid/](http://www.mysqlperformanceblog.com/2007/03/13/to-uuid-or-not-to-uuid/).
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -180,6 +182,3 @@ When you set this option to `true`, it expects you have foreign_keys with `_uuid
     
 ## Testing
 This gem will set the format for dumping the database schema to `:sql`. This means that it is no longer dump the schema to ruby code but database-independent version, `db/structure.sql`. Therefore, you would not have any problems when running the tests.
-
-## References
-- [http://www.mysqlperformanceblog.com/2007/03/13/to-uuid-or-not-to-uuid/](http://www.mysqlperformanceblog.com/2007/03/13/to-uuid-or-not-to-uuid/)
