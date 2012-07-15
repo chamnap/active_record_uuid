@@ -2,6 +2,16 @@
 
 `active_record_uuid` is a nice gem that add uuid supports to your `activerecord` models (MySQL). It allows you to store uuid in various formats: binary (16 bytes), base64 (24 bytes), hexdigest (32 bytes), or string (36 bytes), and query back with uuid string.
 
+The performance issues arises when you store primary key in large data size. You have two options:
+- use `auto-increment` primary key along with uuid column
+- use `uuid` primary key, but store in binary format
+
+You have various choices when storing uuid:
+- binary format, 16 bytes
+- base64 format, 24 bytes (encode uuid into base64)
+- hexdigest, 32 bytes string (compact uuid format, without dash)
+- string, 36 bytes string (full length uuid)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -37,16 +47,6 @@ If you need to use `uuid` column as primary key, don't add any `:primary_key` in
     $ rake db:add_primary_keys            # Add primary keys to all models
     $ rake db:add_primary_key[model_name] # Add primary key to a model
 
-The performance issues arises when you store primary key in large data size. You have two options:
-- use `auto-increment` primary key along with uuid column
-- use `uuid` primary key, but store in binary format
-
-You have various choices when storing uuid:
-- binary format, 16 bytes
-- base64 format, 24 bytes (encode uuid into base64)
-- hexdigest, 32 bytes string (compact uuid format, without dash)
-- string, 36 bytes string (full length uuid)
-
 ### Migration
 
 In order for the gem to work well, you need to specify the column `type` and `limit` correctly according to your `has_uuid` (`store_as` option).
@@ -77,9 +77,9 @@ Run the following generator command, then edit the generated file.
 
     $ rails g active_record_uuid:config
 
-### Configuring your model
+### Model configuration
 
-To use uuid in your model, call `uuid_config` in your model.
+To use uuid in your model, call `has_uuid` in your model.
 
     class Post < ActiveRecord::Base
       has_uuid :primary_key => true, :hook => :before_create
