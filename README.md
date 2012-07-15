@@ -18,7 +18,11 @@ Or install it yourself as:
     
 ## Upgrade from version 0.0.1
 
-`ActiveRecordBase::UuidBase` and `UuidBaseHelper` are depreciated. Right now, you can configure your model by using `uuid_config` and inherit from `ActiveRecord::Base`. Check out the usage below.
+`ActiveRecordBase::UuidBase` and `UuidBaseHelper` are depreciated. Right now, you can configure your model by using `has_uuid` and inherit from `ActiveRecord::Base`. Check out the usage below.
+
+## Upgrade from version 0.1.0
+
+`uuid_config` is fine, but I like to use `has_uuid` and passing in options instead.
 
 ## Usage
 
@@ -45,34 +49,40 @@ You have various choices when storing uuid:
 
 ### Migration
 
-In order for the gem to work well, you need to specify the column `type` and `limit` correctly according to your `uuid_config` (`store_as`).
+In order for the gem to work well, you need to specify the column `type` and `limit` correctly according to your `has_uuid` (`store_as` option).
 
     create_table :posts, :force => true, :id => false do |t|
-      t.binary :uuid, :limit => 16 # must set to the correct value
+      t.binary :uuid, :limit => 16 # `must set to the correct value`
       t.string :text
       t.timestamps
     end
     
     class Post < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        store_as    :binary
-      end
+      has_uuid :primary_key => true, :store_as => :binary
     end
+    
+### General configuration options
+
+You can configure using `ActiveRecordUuid.configure`, and it will apply to any models which use `has_uuid`. Each model can overwrite the general options by passing options into `has_uuid`. The following are default values:
+
+    column      :uuid           # :uuid is default
+    primary_key true            # false is default
+    association false           # false is default
+    generator   :timestamp      # :timestamp is default
+    store_as    :string         # :string is default
+    hook        :before_create  # :before_validation is default
+    
+There's a config generator that generates the default configuration file into config/initializers directory.
+Run the following generator command, then edit the generated file.
+
+    $ rails g active_record_uuid:config
 
 ### Configuring your model
 
 To use uuid in your model, call `uuid_config` in your model.
 
     class Post < ActiveRecord::Base
-      uuid_config do
-        column      :uuid       # :uuid is default
-        primary_key true        # false is default
-        association false       # false is default
-        generator   :timestamp  # :timestamp is default
-        store_as    :string     # :string is default
-        hook        :before_create # :before_validation is default
-      end
+      has_uuid :primary_key => true, :hook => :before_create
     end
     
     # create a post with auto-generated uuid
@@ -100,10 +110,7 @@ To use uuid in your model, call `uuid_config` in your model.
 ### Binary uuid model (example)
 
     class PostBinary < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        store_as    :binary
-      end
+      has_uuid :primary_key => true, :store_as => :binary
     end
     
     post = PostBinary.create(:text => "Binary uuid1")
@@ -123,7 +130,7 @@ To use uuid in your model, call `uuid_config` in your model.
     post.reload
     post.attributes_before_type_cast["uuid"]["value"]
 
-### Avaliable options inside `uuid_config`
+### Avaliable options inside `has_uuid`
 #### `column` option
 
 Set the column name to store uuid value.
@@ -149,37 +156,25 @@ Specify the activerecord hook `[:after_initialize, :before_validation, :before_c
 When you set this option to `true`, it expects you have foreign_keys with `_uuid`. Therefore, you don't have to pass `:foreign_key` option inside association methods
 
     class Author < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        association true
-      end
+      has_uuid :primary_key => true, :association => true
       has_and_belongs_to_many :posts
     end
 
     class Post < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        association true
-      end
+      has_uuid :primary_key => true, :association => true
       has_many :comments
       has_one  :comment
       has_and_belongs_to_many :authors
     end
 
     class Comment < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        association true
-      end
+      has_uuid :primary_key => true, :association => true
       belongs_to :post
     end
 
     # overwrite :foreign_key option and add additional option
     class Post < ActiveRecord::Base
-      uuid_config do
-        primary_key true
-        association true
-      end
+      has_uuid :primary_key => true, :association => true
       has_many :comments, :foreign_key => "comment_id", :inverse_of => :post
     end
     
