@@ -4,7 +4,7 @@ class ActiveRecord::UuidBase < ::ActiveRecord::Base
   class << self
     def inherited_with_uuid(kls)
       inherited_without_uuid kls
-      warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `uuid_config` instead."
+      warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `has_uuid` instead."
       kls.uuid_config do
         primary_key true
         association true
@@ -15,7 +15,7 @@ class ActiveRecord::UuidBase < ::ActiveRecord::Base
   end
 
   self.descendants.each do |kls|
-    warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `uuid_config` instead."
+    warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `has_uuid` instead."
     kls.uuid_config do
       primary_key true
       association true

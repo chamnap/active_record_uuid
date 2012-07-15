@@ -30,6 +30,11 @@ class PostBinary < ActiveRecord::Base
   has_many :comments
 end
 
+class People < ActiveRecord::Base
+  self.table_name = "people"
+  has_uuid :column => :uuid, :primary_key => true, :store_as => :binary
+end
+
 class PostBase64 < ActiveRecord::Base
   uuid_config do
     primary_key true

@@ -13,10 +13,8 @@ ActiveRecord::Base.establish_connection(db_config.merge(:database => nil))
 ActiveRecord::Base.connection.create_database(db_config[:database], { :charset => 'utf8', :collation => 'utf8_unicode_ci' })
 ActiveRecord::Base.establish_connection(db_config)
 
-# load extension
-require 'active_record_uuid/extensions/quoting_extension'
-::ActiveRecord::Base.connection.class.send :include, ActiveRecordUuid::QuotingExtension
-::ActiveRecord::Base.send(:include, ActiveRecordUuid::Model)
+# load hooks
+ActiveRecordUuid::Hooks.init
 
 # load support
 load File.dirname(__FILE__) + '/support/schema.rb'

@@ -1,6 +1,6 @@
 module UuidBaseHelper
   def self.included(base)
-    warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `uuid_config` instead."
+    warn "[DEPRECATION] `UuidBaseHelper` and `ActiveRecord::UuidBase` are deprecated.  Please inherit from `ActiveRecord::Base` and use `has_uuid` instead."
     
     base.send(:include, ActiveRecordUuid::Model)
     base.uuid_config do

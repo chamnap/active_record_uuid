@@ -12,6 +12,13 @@ describe "Uuid Config" do
     @config.hook.should eq(:before_validation)
   end
   
+  it "should initialize with provided values" do
+    @config = ActiveRecordUuid::Config.new(:primary_key => true, :column => :my_uuid)
+    
+    @config.primary_key.should eq(true)
+    @config.column.should eq(:my_uuid)
+  end
+  
   it "should validate options: generator" do
     @config = ActiveRecordUuid::Config.new
     
@@ -37,5 +44,14 @@ describe "Uuid Config" do
     lambda { 
       @config.validate_options!
     }.should raise_error ArgumentError, /^Expected :before_validation/
+  end
+  
+  it "should return as a hash with appropriate value" do
+    @config = ActiveRecordUuid::Config.new(:primary_key => true, :column => :my_uuid)
+    
+    hash = @config.to_hash
+    hash.should be_instance_of(Hash)
+    hash[:primary_key].should eq(@config.primary_key)
+    hash[:column].should eq(@config.column)
   end
 end

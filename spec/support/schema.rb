@@ -19,6 +19,12 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
   
+  create_table :people, :force => true, :id => false do |t|
+    t.binary :uuid, :limit => 16
+    t.string :name
+    t.timestamps
+  end
+  
   create_table :post_base64s, :force => true, :id => false do |t|
     t.string :uuid, :limit => 24
     t.string :text
