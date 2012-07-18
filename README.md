@@ -67,12 +67,14 @@ In order for the gem to work well, you need to specify the column `type` and `li
 
 You can configure using `ActiveRecordUuid.configure`, and it will apply to any models which use `has_uuid`. Each model can overwrite the general options by passing options into `has_uuid`. The following are default values:
 
-    column      :uuid           # :uuid is default
-    primary_key true            # false is default
-    association false           # false is default
-    generator   :timestamp      # :timestamp is default
-    store_as    :string         # :string is default
-    hook        :before_create  # :before_validation is default
+    ActiveRecordUuid.configure do
+      column      :uuid           # :uuid is default
+      primary_key true            # false is default
+      association false           # false is default
+      generator   :timestamp      # :timestamp is default
+      store_as    :string         # :string is default
+      hook        :before_create  # :before_validation is default
+    end
     
 There's a config generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
