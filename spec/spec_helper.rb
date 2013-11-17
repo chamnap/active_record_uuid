@@ -5,7 +5,7 @@ db_config = {
   :adapter => "mysql2",
   :database => "active_record_uuid",
   :user => "root",
-  :password => "Q1p2m3g4"
+  :password => ""
 }
 
 ActiveRecord::Base.establish_connection(db_config) rescue nil
