@@ -1,10 +1,11 @@
 require 'active_record_uuid'
+require 'pry'
 
 db_config = {
-  :adapter => "mysql2", 
+  :adapter => "mysql2",
   :database => "active_record_uuid",
   :user => "root",
-  :password => ""
+  :password => "Q1p2m3g4"
 }
 
 ActiveRecord::Base.establish_connection(db_config) rescue nil
@@ -23,4 +24,5 @@ load File.dirname(__FILE__) + '/support/models.rb'
 RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 end

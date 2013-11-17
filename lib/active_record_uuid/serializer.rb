@@ -4,7 +4,7 @@ module ActiveRecordUuid
     def initialize(type)
       @type = type
     end
-    
+
     def load(value)
       return nil if value.nil?
 
@@ -20,21 +20,21 @@ module ActiveRecordUuid
           UUIDTools::UUID.parse(value)
         end
         raise ArgumentError unless uuid.valid?
-        
+
         uuid.to_s
       rescue ArgumentError, TypeError
         raise ActiveRecord::SerializationTypeMismatch,
           "Attribute was supposed to be a valid uuid, but was #{value}"
       end
     end
-    
+
     def dump(value)
       uuid = begin
         UUIDTools::UUID.parse(value)
       rescue ArgumentError, TypeError
         nil
       end
-      
+
       case type
       when :binary
         uuid.raw
