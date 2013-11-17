@@ -1,4 +1,4 @@
-# ActiveRecordUuid
+# ActiveRecordUuid [![Build Status](https://travis-ci.org/chamnap/active_record_uuid.png?branch=master)](https://travis-ci.org/chamnap/active_record_uuid)
 
 `active_record_uuid` is a nice gem that add uuid supports to your `activerecord` models (MySQL). It allows you to store uuid in various formats: binary (16 bytes), base64 (24 bytes), hexdigest (32 bytes), or string (36 bytes), and query back with uuid string.
 
