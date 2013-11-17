@@ -14,7 +14,7 @@ describe "Binary Uuid" do
       post = PostBinary.create(:text => "Binary uuid1")
       post.reload
 
-      post.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(16)
+      PostBinary.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(16)
     end
 
     it "should retreive back as uuid string from binary" do

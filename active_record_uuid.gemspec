@@ -15,11 +15,13 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ActiveRecordUuid::VERSION
 
+  gem.add_development_dependency "rake", "~> 10.1.0"
   gem.add_development_dependency "bundler", ">= 1.3.5"
   gem.add_development_dependency "rspec", "~> 2.12.0"
-  gem.add_development_dependency "pry"
-  gem.add_development_dependency "mysql2"
-  gem.add_dependency "activerecord", "~> 3.0"
+  gem.add_development_dependency "pry", "~> 0.9.12.3"
+
+
+  gem.add_dependency "activerecord", ">= 3.2"
   gem.add_dependency "uuidtools", "~> 2.1.2"
-  gem.add_dependency "mysql2"
+  gem.add_dependency "mysql2", "~> 0.3.14"
 end

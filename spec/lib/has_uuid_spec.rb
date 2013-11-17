@@ -10,7 +10,7 @@ describe "has_uuid spec" do
       person = People.create(:name => "Binary name1")
       person.reload
 
-      person.serialized_attributes['uuid'].dump(person.uuid).bytesize.should eq(16)
+      People.serialized_attributes['uuid'].dump(person.uuid).bytesize.should eq(16)
     end
 
     it "should find by uuid column" do
@@ -53,7 +53,7 @@ describe "has_uuid spec" do
       person = PeopleBinary.create!(:name => "Binary name1")
       person.reload
 
-      person.serialized_attributes['uuid'].dump(person.uuid).bytesize.should eq(16)
+      PeopleBinary.serialized_attributes['uuid'].dump(person.uuid).bytesize.should eq(16)
     end
   end
 end

@@ -10,7 +10,7 @@ describe "String Uuid" do
       post = Post.create(:text => "String uuid1")
       post.reload
 
-      post.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(36)
+      Post.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(36)
     end
 
     it "should retreive back as uuid string from String" do

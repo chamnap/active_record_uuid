@@ -10,7 +10,7 @@ describe "Base64 Uuid" do
       post = PostBase64.create(:text => "Base64 uuid1")
       post.reload
 
-      post.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(24)
+      PostBase64.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(24)
     end
 
     it "should retreive back as uuid string from base64" do

@@ -10,7 +10,7 @@ describe "HexDigest Uuid" do
       post = PostHexDigest.create(:text => "HexDigest uuid1")
       post.reload
 
-      post.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(32)
+      PostHexDigest.serialized_attributes['uuid'].dump(post.uuid).bytesize.should eq(32)
     end
 
     it "should retreive back as uuid string from HexDigest" do
