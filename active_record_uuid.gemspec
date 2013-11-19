@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "active_record_uuid"
   gem.require_paths = ["lib"]
   gem.version       = ActiveRecordUuid::VERSION
+  gem.license       = "MIT"
 
   gem.add_development_dependency "rake", "~> 10.1.0"
   gem.add_development_dependency "bundler", ">= 1.3.5"
