@@ -16,6 +16,9 @@ Gem::Specification.new do |gem|
   gem.version       = ActiveRecordUuid::VERSION
   gem.license       = "MIT"
 
+  gem.required_ruby_version     = '>= 1.9.3'
+  gem.required_rubygems_version = '>= 1.8.11'
+
   gem.add_development_dependency "rake", "~> 10.1.0"
   gem.add_development_dependency "bundler", ">= 1.3.5"
   gem.add_development_dependency "rspec", "~> 2.12.0"
