@@ -26,5 +26,4 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "activerecord", ">= 3.2"
   gem.add_dependency "uuidtools", "~> 2.1.2"
-  gem.add_dependency "mysql2", "~> 0.3.14"
 end
